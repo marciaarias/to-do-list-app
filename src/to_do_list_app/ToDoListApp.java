@@ -9,6 +9,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
+import net.proteanit.sql.DbUtils;
+
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.awt.event.ActionEvent;
+
 public class ToDoListApp {
 
 	private JFrame frmTodoList;
@@ -50,6 +58,26 @@ public class ToDoListApp {
 		frmTodoList.getContentPane().setLayout(null);
 		
 		JButton btnLoadData = new JButton("Load Data");
+		btnLoadData.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				DataModule dm = new DataModule();
+				
+				try {
+					Connection connection = dm.getConnection();
+					
+					String query = "SELECT done, task, task_details FROM tasks";
+					PreparedStatement statement = connection.prepareStatement(query);
+					ResultSet rs = statement.executeQuery();
+					
+					table.setModel(DbUtils.resultSetToTableModel(rs));
+					
+				} catch (Exception e2) {
+					  e2.printStackTrace();
+				}
+				
+			}
+		});
 		btnLoadData.setBounds(10, 11, 110, 31);
 		frmTodoList.getContentPane().add(btnLoadData);
 		
