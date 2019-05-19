@@ -152,7 +152,7 @@ public class ToDoListApp {
 				int selectedRowIndex = table.getSelectedRow();
 				
 				if(table.isRowSelected(selectedRowIndex) == true){
-				    int clickedOption = JOptionPane.showConfirmDialog(null, "Are you sure you want to modify this task?", "Warning", JOptionPane.YES_NO_OPTION);
+				    int clickedOption = JOptionPane.showConfirmDialog(null, "Are you sure you want to modify this task?", "Confirm Update", JOptionPane.YES_NO_OPTION);
 				    
 				    if(clickedOption == JOptionPane.YES_OPTION){	
 						DataModule dm = new DataModule();
@@ -202,7 +202,7 @@ public class ToDoListApp {
 				int selectedRowIndex = table.getSelectedRow();
 				
 				if(table.isRowSelected(selectedRowIndex) == true){
-				    int clickedOption = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this task?", "Warning", JOptionPane.YES_NO_OPTION);
+				    int clickedOption = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this task?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
 				    
 				    if(clickedOption == JOptionPane.YES_OPTION){	
 						DataModule dm = new DataModule();
@@ -234,6 +234,16 @@ public class ToDoListApp {
 		
 		//Implement button 'Quit'.
 		JButton btnQuit = new JButton("Quit");
+		btnQuit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				int clickedOption = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit?", "Confirm Quit", JOptionPane.YES_NO_OPTION);
+			    if(clickedOption == JOptionPane.YES_OPTION){
+			    	frmTodoList.dispose();
+			    }
+				
+			}
+		});
 		btnQuit.setBounds(432, 460, 89, 31);
 		frmTodoList.getContentPane().add(btnQuit);
 		
