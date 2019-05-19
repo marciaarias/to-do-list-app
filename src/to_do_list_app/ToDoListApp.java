@@ -301,7 +301,16 @@ public class ToDoListApp {
 		frmTodoList.getContentPane().add(textTaskDetails);
 		textTaskDetails.setColumns(300);
 		
+		//Implement button 'Help'.
 		JButton btnHelp = new JButton("?");
+		btnHelp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				HelpWindow helpWindow = new HelpWindow();
+				helpWindow.setVisible(true);
+				
+			}
+		});
 		btnHelp.setBounds(479, 10, 42, 31);
 		frmTodoList.getContentPane().add(btnHelp);
 		
