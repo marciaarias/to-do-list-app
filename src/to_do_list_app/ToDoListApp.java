@@ -16,19 +16,23 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.awt.event.ActionEvent;
-import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JCheckBox;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ToDoListApp {
 
 	private JFrame frmTodoList;
 	private JTable table;
 	private JTextField textTask;
-	private JTextField textTextDetails;
+	private JTextField textTaskDetails;
+	private JCheckBox chckbxCompleted;
 
 	/**
 	 * Launch the application.
@@ -74,7 +78,7 @@ public class ToDoListApp {
 				try {
 					Connection connection = dm.getConnection();
 					
-					String query = "SELECT done, task, task_details FROM tasks";
+					String query = "SELECT completed, task, task_details FROM tasks";
 					PreparedStatement statement = connection.prepareStatement(query);
 					ResultSet rs = statement.executeQuery();
 					
@@ -110,6 +114,24 @@ public class ToDoListApp {
 		frmTodoList.getContentPane().add(scrollPane);
 		
 		table = new JTable();
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				DefaultTableModel model = (DefaultTableModel)table.getModel();
+				int selectedRowIndex = table.getSelectedRow();
+				
+				textTask.setText(model.getValueAt(selectedRowIndex, 1).toString());
+				textTaskDetails.setText(model.getValueAt(selectedRowIndex, 2).toString());
+				
+				if(model.getValueAt(selectedRowIndex, 0).toString().equals("N")) {
+					chckbxCompleted.setSelected(false);
+				} else {
+					chckbxCompleted.setSelected(true);
+				}
+				
+			}
+		});
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(table);
 		
@@ -118,31 +140,31 @@ public class ToDoListApp {
 		frmTodoList.getContentPane().add(separator);
 		
 		JLabel lblTask = new JLabel("Task:");
-		lblTask.setBounds(61, 297, 36, 14);
+		lblTask.setBounds(61, 293, 36, 14);
 		frmTodoList.getContentPane().add(lblTask);
 		
 		JLabel lblTaskDetails = new JLabel("Task Details:");
-		lblTaskDetails.setBounds(20, 329, 77, 14);
+		lblTaskDetails.setBounds(20, 324, 77, 14);
 		frmTodoList.getContentPane().add(lblTaskDetails);
 		
 		textTask = new JTextField();
-		textTask.setBounds(104, 294, 396, 20);
+		textTask.setBounds(104, 286, 396, 20);
 		frmTodoList.getContentPane().add(textTask);
 		textTask.setColumns(100);
 		
-		textTextDetails = new JTextField();
-		textTextDetails.setBounds(104, 326, 396, 20);
-		frmTodoList.getContentPane().add(textTextDetails);
-		textTextDetails.setColumns(300);
+		textTaskDetails = new JTextField();
+		textTaskDetails.setBounds(104, 318, 396, 20);
+		frmTodoList.getContentPane().add(textTaskDetails);
+		textTaskDetails.setColumns(300);
 		
 		JButton btnHelp = new JButton("?");
 		btnHelp.setBounds(479, 10, 42, 31);
 		frmTodoList.getContentPane().add(btnHelp);
 		
-		JLabel lblNewTask = new JLabel("Manage Task:");
-		lblNewTask.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewTask.setBounds(15, 248, 120, 23);
-		frmTodoList.getContentPane().add(lblNewTask);
+		JLabel lblManageTask = new JLabel("Manage Task:");
+		lblManageTask.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblManageTask.setBounds(15, 248, 120, 23);
+		frmTodoList.getContentPane().add(lblManageTask);
 		
 		JSeparator separator2 = new JSeparator();
 		separator2.setOrientation(SwingConstants.VERTICAL);
@@ -158,8 +180,16 @@ public class ToDoListApp {
 		separator4.setBounds(10, 271, 511, 2);
 		frmTodoList.getContentPane().add(separator4);
 		
-		JButton btnNewButton = new JButton("Clear");
-		btnNewButton.setBounds(30, 390, 87, 23);
-		frmTodoList.getContentPane().add(btnNewButton);
+		JButton btnClear = new JButton("Clear");
+		btnClear.setBounds(30, 390, 87, 23);
+		frmTodoList.getContentPane().add(btnClear);
+		
+		JLabel lblCompleted = new JLabel("Completed:");
+		lblCompleted.setBounds(29, 356, 68, 14);
+		frmTodoList.getContentPane().add(lblCompleted);
+		
+		chckbxCompleted = new JCheckBox("");
+		chckbxCompleted.setBounds(100, 351, 28, 23);
+		frmTodoList.getContentPane().add(chckbxCompleted);
 	}
 }
