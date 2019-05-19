@@ -181,6 +181,15 @@ public class ToDoListApp {
 		frmTodoList.getContentPane().add(separator4);
 		
 		JButton btnClear = new JButton("Clear");
+		btnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				textTask.setText("");
+				textTaskDetails.setText("");
+				chckbxCompleted.setSelected(false);
+				
+			}
+		});
 		btnClear.setBounds(30, 390, 87, 23);
 		frmTodoList.getContentPane().add(btnClear);
 		
