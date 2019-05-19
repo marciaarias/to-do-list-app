@@ -47,49 +47,50 @@ public class HelpWindow extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("How to use the To-do List app:");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel.setBounds(10, 22, 424, 20);
-		contentPane.add(lblNewLabel);
+		JLabel lblHelp = new JLabel("How to use the To-do List app:");
+		lblHelp.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblHelp.setBounds(10, 22, 424, 20);
+		contentPane.add(lblHelp);
 		
-		JLabel lblNewLabel_1 = new JLabel("\u00B0 \"Load Tasks\" button: display all previously added tasks.");
-		lblNewLabel_1.setBounds(10, 66, 424, 14);
-		contentPane.add(lblNewLabel_1);
+		JLabel lblHelp2 = new JLabel("\u00B0 \"Load Tasks\" button: display all previously added tasks.");
+		lblHelp2.setBounds(10, 66, 424, 14);
+		contentPane.add(lblHelp2);
 		
-		JLabel lblNewLabel_2 = new JLabel("\u00B0 \"Task\" field: type a new task to the to-do list.");
-		lblNewLabel_2.setBounds(10, 140, 424, 14);
-		contentPane.add(lblNewLabel_2);
+		JLabel lblHelp6 = new JLabel("\u00B0 \"Task\" field: type a new task to the to-do list.");
+		lblHelp6.setBounds(10, 140, 424, 14);
+		contentPane.add(lblHelp6);
 		
-		JLabel lblNewLabel_3 = new JLabel("\u00B0 \"Task Details\" field: type an optional description or details about the task.");
-		lblNewLabel_3.setBounds(10, 165, 424, 14);
-		contentPane.add(lblNewLabel_3);
+		JLabel lblHelp7 = new JLabel("\u00B0 \"Task Details\" field: type an optional description or details about the task.");
+		lblHelp7.setBounds(10, 165, 424, 14);
+		contentPane.add(lblHelp7);
 		
-		JLabel lblNewLabel_4 = new JLabel("\u00B0 \"Completed\" field: check whether the task is or is not been completed.");
-		lblNewLabel_4.setBounds(10, 190, 424, 14);
-		contentPane.add(lblNewLabel_4);
+		JLabel lblHelp8 = new JLabel("\u00B0 \"Completed\" field: check whether the task is or is not been completed.");
+		lblHelp8.setBounds(10, 190, 424, 14);
+		contentPane.add(lblHelp8);
 		
-		JLabel lblNewLabel_5 = new JLabel("\u00B0 \"Manage Task\" section: update and delete previously selected tasks,");
-		lblNewLabel_5.setBounds(10, 103, 424, 14);
-		contentPane.add(lblNewLabel_5);
+		JLabel lblHelp4 = new JLabel("\u00B0 \"Manage Task\" section: update and delete previously selected tasks,");
+		lblHelp4.setBounds(10, 103, 424, 14);
+		contentPane.add(lblHelp4);
 		
-		JLabel lblNewLabel_6 = new JLabel("Select a task to fill the \"Manage Task\" section in order to manage it.");
-		lblNewLabel_6.setBounds(10, 78, 424, 14);
-		contentPane.add(lblNewLabel_6);
+		JLabel lblHelp3 = new JLabel("Select a task to fill the \"Manage Task\" section in order to manage it.");
+		lblHelp3.setBounds(10, 78, 424, 14);
+		contentPane.add(lblHelp3);
 		
-		JLabel lblNewLabel_7 = new JLabel("or add new ones. Use the \"Clear\" button to clear all fields.");
-		lblNewLabel_7.setBounds(10, 115, 424, 14);
-		contentPane.add(lblNewLabel_7);
+		JLabel lblHelp5 = new JLabel("or add new ones. Use the \"Clear\" button to clear all fields.");
+		lblHelp5.setBounds(10, 115, 424, 14);
+		contentPane.add(lblHelp5);
 		
 		//Implement button 'Close'.
-		JButton btnNewButton = new JButton("Close");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnClose = new JButton("Close");
+		btnClose.setToolTipText("Close Help window");
+		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				 
 				dispose();
 				
 			}
 		});
-		btnNewButton.setBounds(187, 230, 89, 31);
-		contentPane.add(btnNewButton);
+		btnClose.setBounds(187, 230, 89, 31);
+		contentPane.add(btnClose);
 	}
 }

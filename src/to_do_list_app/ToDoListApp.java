@@ -26,6 +26,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import net.proteanit.sql.DbUtils;
+import javax.swing.ImageIcon;
 
 public class ToDoListApp {
 
@@ -73,6 +74,7 @@ public class ToDoListApp {
 		
 		//Implement button 'Load Tasks'.
 		JButton btnLoadTasks = new JButton("Load Tasks");
+		btnLoadTasks.setToolTipText("Display previously added tasks");
 		btnLoadTasks.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -98,6 +100,7 @@ public class ToDoListApp {
 		
 		//Implement button 'Add'.
 		JButton btnAdd = new JButton("Add");
+		btnAdd.setToolTipText("Add new task to the to-do list");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -146,6 +149,7 @@ public class ToDoListApp {
 		
 		//Implement button 'Update'.
 		JButton btnUpdate = new JButton("Update");
+		btnUpdate.setToolTipText("Update currently selected task");
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -196,6 +200,7 @@ public class ToDoListApp {
 		
 		//Implement button 'Delete'.
 		JButton btnDelete = new JButton("Delete");
+		btnDelete.setToolTipText("Delete currently selected task");
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -234,6 +239,7 @@ public class ToDoListApp {
 		
 		//Implement button 'Quit'.
 		JButton btnQuit = new JButton("Quit");
+		btnQuit.setToolTipText("Quit the application");
 		btnQuit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -292,17 +298,21 @@ public class ToDoListApp {
 		frmTodoList.getContentPane().add(lblTaskDetails);
 		
 		textTask = new JTextField();
+		textTask.setToolTipText("Task to be completed");
 		textTask.setBounds(104, 286, 396, 20);
 		frmTodoList.getContentPane().add(textTask);
 		textTask.setColumns(100);
 		
 		textTaskDetails = new JTextField();
+		textTaskDetails.setToolTipText("Details about the task");
 		textTaskDetails.setBounds(104, 318, 396, 20);
 		frmTodoList.getContentPane().add(textTaskDetails);
 		textTaskDetails.setColumns(300);
 		
 		//Implement button 'Help'.
 		JButton btnHelp = new JButton("?");
+		btnHelp.setToolTipText("Display Help window");
+		btnHelp.setSelectedIcon(new ImageIcon("C:\\Users\\arias\\eclipse-workspace\\to-do-list-app\\resources\\information.png"));
 		btnHelp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -335,6 +345,7 @@ public class ToDoListApp {
 		
 		//Implement button 'Clear'.
 		JButton btnClear = new JButton("Clear");
+		btnClear.setToolTipText("Clear all fields");
 		btnClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -352,6 +363,7 @@ public class ToDoListApp {
 		frmTodoList.getContentPane().add(lblCompleted);
 		
 		chckbxCompleted = new JCheckBox("");
+		chckbxCompleted.setToolTipText("Track completion of the task");
 		chckbxCompleted.setBounds(100, 351, 28, 23);
 		frmTodoList.getContentPane().add(chckbxCompleted);
 	}
