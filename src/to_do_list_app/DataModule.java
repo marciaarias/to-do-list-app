@@ -1,6 +1,7 @@
 package to_do_list_app;
 
 import java.util.Properties;
+
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,6 +10,7 @@ public class DataModule {
 	
 	Properties properties;
 	FileInputStream reader;
+	int id;
 
 	public Connection getConnection() throws Exception{
 		
@@ -26,11 +28,11 @@ public class DataModule {
 
 			return connection;
 		  
-			}catch(Exception e){
+		}catch(Exception e){
 				e.printStackTrace();
-			}
+		}
 	  
-			return null;
+		return null;
 	  
 	}
 

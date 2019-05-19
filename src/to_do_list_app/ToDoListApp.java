@@ -18,6 +18,7 @@ import java.sql.ResultSet;
 import java.awt.event.ActionEvent;
 import javax.swing.JSeparator;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -66,6 +67,7 @@ public class ToDoListApp {
 		frmTodoList.setTitle("To-do List");
 		frmTodoList.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\arias\\eclipse-workspace\\to-do-list-app\\resources\\to-do-list.png"));
 		frmTodoList.setBounds(100, 100, 549, 544);
+		frmTodoList.setLocationRelativeTo(null);
 		frmTodoList.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmTodoList.getContentPane().setLayout(null);
 		
@@ -78,7 +80,7 @@ public class ToDoListApp {
 				try {
 					Connection connection = dm.getConnection();
 					
-					String query = "SELECT completed, task, task_details FROM tasks";
+					String query = "SELECT id, completed, task, task_details FROM tasks";
 					PreparedStatement statement = connection.prepareStatement(query);
 					ResultSet rs = statement.executeQuery();
 					
@@ -102,6 +104,39 @@ public class ToDoListApp {
 		frmTodoList.getContentPane().add(btnUpdate);
 		
 		JButton btnDelete = new JButton("Delete");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				int selectedRowIndex = table.getSelectedRow();
+				
+				if(table.isRowSelected(selectedRowIndex) == true){
+				    int clickedOption = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this task?", "Warning", JOptionPane.YES_NO_OPTION);
+				    
+				    if(clickedOption == JOptionPane.YES_OPTION){	
+						DataModule dm = new DataModule();
+						DefaultTableModel model = (DefaultTableModel)table.getModel();
+					
+						try {
+							Connection connection = dm.getConnection();
+						
+							String query = "DELETE FROM tasks WHERE id = " + (int)(model.getValueAt(selectedRowIndex, 0));
+						
+							PreparedStatement statement = connection.prepareStatement(query);
+						    statement.executeUpdate(query);
+							ResultSet rs = statement.executeQuery("SELECT id, completed, task, task_details FROM tasks");
+							
+							table.setModel(DbUtils.resultSetToTableModel(rs));
+						
+						} catch (Exception e2) {
+							e2.printStackTrace();
+						}
+				    }
+				} else {
+					JOptionPane.showMessageDialog(new JFrame(), "Please select a task first.");
+				}
+				
+			}
+		});
 		btnDelete.setBounds(219, 390, 87, 23);
 		frmTodoList.getContentPane().add(btnDelete);
 		
@@ -121,10 +156,10 @@ public class ToDoListApp {
 				DefaultTableModel model = (DefaultTableModel)table.getModel();
 				int selectedRowIndex = table.getSelectedRow();
 				
-				textTask.setText(model.getValueAt(selectedRowIndex, 1).toString());
-				textTaskDetails.setText(model.getValueAt(selectedRowIndex, 2).toString());
+				textTask.setText(model.getValueAt(selectedRowIndex, 2).toString());
+				textTaskDetails.setText(model.getValueAt(selectedRowIndex, 3).toString());
 				
-				if(model.getValueAt(selectedRowIndex, 0).toString().equals("N")) {
+				if(model.getValueAt(selectedRowIndex, 1).toString().equals("N")) {
 					chckbxCompleted.setSelected(false);
 				} else {
 					chckbxCompleted.setSelected(true);
