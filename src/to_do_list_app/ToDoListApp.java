@@ -100,6 +100,47 @@ public class ToDoListApp {
 		frmTodoList.getContentPane().add(btnAdd);
 		
 		JButton btnUpdate = new JButton("Update");
+		btnUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				int selectedRowIndex = table.getSelectedRow();
+				
+				if(table.isRowSelected(selectedRowIndex) == true){
+				    int clickedOption = JOptionPane.showConfirmDialog(null, "Are you sure you want to modify this task?", "Warning", JOptionPane.YES_NO_OPTION);
+				    
+				    if(clickedOption == JOptionPane.YES_OPTION){	
+						DataModule dm = new DataModule();
+						DefaultTableModel model = (DefaultTableModel)table.getModel();
+					
+						try {
+							Connection connection = dm.getConnection();
+							String chckbxSelected = "N";
+						
+							if(chckbxCompleted.isSelected() == true) {
+								chckbxSelected = "Y";
+							}
+							
+							String query = "UPDATE tasks SET completed = '" + chckbxSelected 
+											+ "' , task = '" + textTask.getText() 
+											+ "' , task_details = '" + textTaskDetails.getText() 
+											+ "' WHERE id = " + (int)(model.getValueAt(selectedRowIndex, 0));
+						
+							PreparedStatement statement = connection.prepareStatement(query);
+						    statement.executeUpdate(query);
+							ResultSet rs = statement.executeQuery("SELECT id, completed, task, task_details FROM tasks");
+							
+							table.setModel(DbUtils.resultSetToTableModel(rs));
+						
+						} catch (Exception e2) {
+							e2.printStackTrace();
+						}
+				    }
+				} else {
+					JOptionPane.showMessageDialog(new JFrame(), "Please select a task first.");
+				}
+				
+			}
+		});
 		btnUpdate.setBounds(316, 390, 87, 23);
 		frmTodoList.getContentPane().add(btnUpdate);
 		
