@@ -1,31 +1,31 @@
 package to_do_list_app;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
-import java.awt.Toolkit;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-
-import net.proteanit.sql.DbUtils;
-
-import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.awt.event.ActionEvent;
 import javax.swing.JSeparator;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JCheckBox;
+
+import java.awt.EventQueue;
+import java.awt.Toolkit;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import net.proteanit.sql.DbUtils;
 
 public class ToDoListApp {
 
@@ -71,6 +71,7 @@ public class ToDoListApp {
 		frmTodoList.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmTodoList.getContentPane().setLayout(null);
 		
+		//Implement button 'Load Tasks'.
 		JButton btnLoadTasks = new JButton("Load Tasks");
 		btnLoadTasks.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -95,10 +96,55 @@ public class ToDoListApp {
 		btnLoadTasks.setBounds(10, 10, 110, 31);
 		frmTodoList.getContentPane().add(btnLoadTasks);
 		
+		//Implement button 'Add'.
 		JButton btnAdd = new JButton("Add");
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(textTask.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(new JFrame(), "\"Task\" field cannot be empty.", "Error", JOptionPane.WARNING_MESSAGE);
+					
+				} else {
+					DataModule dm = new DataModule();
+					
+					try {
+						Connection connection = dm.getConnection();
+						
+						String chckbxSelected = "N";
+						if(chckbxCompleted.isSelected() == true) {
+							chckbxSelected = "Y";
+						}
+						
+						String taskDetails = "";
+						if(textTaskDetails.getText().isEmpty()){
+							taskDetails = "NULL";
+						} else {
+							taskDetails = "'"+ textTaskDetails.getText() +"'";
+						}
+						
+						String query = "INSERT INTO tasks (completed, task, task_details) "
+										+ "VALUES('" + chckbxSelected + "', '" + textTask.getText() + "', " + taskDetails + ")";
+						PreparedStatement statement = connection.prepareStatement(query);
+					    statement.executeUpdate(query);
+						ResultSet rs = statement.executeQuery("SELECT id, completed, task, task_details FROM tasks");
+						
+						table.setModel(DbUtils.resultSetToTableModel(rs));
+						
+						textTask.setText("");
+						textTaskDetails.setText("");
+						chckbxCompleted.setSelected(false);
+						
+					} catch (Exception e2) {
+						  e2.printStackTrace();
+					}
+				}
+				
+			}
+		});
 		btnAdd.setBounds(413, 390, 87, 23);
 		frmTodoList.getContentPane().add(btnAdd);
 		
+		//Implement button 'Update'.
 		JButton btnUpdate = new JButton("Update");
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -114,8 +160,8 @@ public class ToDoListApp {
 					
 						try {
 							Connection connection = dm.getConnection();
+							
 							String chckbxSelected = "N";
-						
 							if(chckbxCompleted.isSelected() == true) {
 								chckbxSelected = "Y";
 							}
@@ -130,6 +176,10 @@ public class ToDoListApp {
 							ResultSet rs = statement.executeQuery("SELECT id, completed, task, task_details FROM tasks");
 							
 							table.setModel(DbUtils.resultSetToTableModel(rs));
+							
+							textTask.setText("");
+							textTaskDetails.setText("");
+							chckbxCompleted.setSelected(false);
 						
 						} catch (Exception e2) {
 							e2.printStackTrace();
@@ -144,6 +194,7 @@ public class ToDoListApp {
 		btnUpdate.setBounds(316, 390, 87, 23);
 		frmTodoList.getContentPane().add(btnUpdate);
 		
+		//Implement button 'Delete'.
 		JButton btnDelete = new JButton("Delete");
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -181,6 +232,7 @@ public class ToDoListApp {
 		btnDelete.setBounds(219, 390, 87, 23);
 		frmTodoList.getContentPane().add(btnDelete);
 		
+		//Implement button 'Quit'.
 		JButton btnQuit = new JButton("Quit");
 		btnQuit.setBounds(432, 460, 89, 31);
 		frmTodoList.getContentPane().add(btnQuit);
@@ -189,6 +241,7 @@ public class ToDoListApp {
 		scrollPane.setBounds(10, 52, 511, 182);
 		frmTodoList.getContentPane().add(scrollPane);
 		
+		//Implement MouseClicked on 'table'.
 		table = new JTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
@@ -198,7 +251,12 @@ public class ToDoListApp {
 				int selectedRowIndex = table.getSelectedRow();
 				
 				textTask.setText(model.getValueAt(selectedRowIndex, 2).toString());
-				textTaskDetails.setText(model.getValueAt(selectedRowIndex, 3).toString());
+				
+				if(model.getValueAt(selectedRowIndex, 3) == null) {
+					textTaskDetails.setText("");
+				} else {
+					textTaskDetails.setText(model.getValueAt(selectedRowIndex, 3).toString());
+				}
 				
 				if(model.getValueAt(selectedRowIndex, 1).toString().equals("N")) {
 					chckbxCompleted.setSelected(false);
@@ -256,6 +314,7 @@ public class ToDoListApp {
 		separator4.setBounds(10, 271, 511, 2);
 		frmTodoList.getContentPane().add(separator4);
 		
+		//Implement button 'Clear'.
 		JButton btnClear = new JButton("Clear");
 		btnClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
