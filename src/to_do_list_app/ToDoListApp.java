@@ -96,6 +96,8 @@ public class ToDoListApp {
 					exception.printStackTrace();
 				}
 				
+				utilities.renameColumns(table);
+				
 			}
 		});
 		btnLoadTasks.setBounds(10, 10, 110, 31);
@@ -137,6 +139,7 @@ public class ToDoListApp {
 						ResultSet resultSet = statement.executeQuery("SELECT id, completed, task, task_details FROM tasks");
 						table.setModel(DbUtils.resultSetToTableModel(resultSet));
 						
+						utilities.renameColumns(table);
 						utilities.clearFields(textTask, textTaskDetails, chckbxCompleted);
 						
 					} catch (Exception exception) {
@@ -183,6 +186,7 @@ public class ToDoListApp {
 							ResultSet resultSet = statement.executeQuery("SELECT id, completed, task, task_details FROM tasks");
 							table.setModel(DbUtils.resultSetToTableModel(resultSet));
 							
+							utilities.renameColumns(table);
 							utilities.clearFields(textTask, textTaskDetails, chckbxCompleted);
 						
 						} catch (Exception exception) {
@@ -224,6 +228,8 @@ public class ToDoListApp {
 						    statement.executeUpdate(query);
 							ResultSet resultSet = statement.executeQuery("SELECT id, completed, task, task_details FROM tasks");
 							table.setModel(DbUtils.resultSetToTableModel(resultSet));
+							
+							utilities.renameColumns(table);
 						
 						} catch (Exception exception) {
 							exception.printStackTrace();
@@ -371,9 +377,5 @@ public class ToDoListApp {
 		chckbxCompleted.setBounds(100, 351, 28, 23);
 		frmTodoList.getContentPane().add(chckbxCompleted);
 	}
-	
-	//private void  
-	//table.getTableHeader().getColumnModel().getColumn(0).setHeaderValue("dd");
-	//table.repaint();
 	
 }
