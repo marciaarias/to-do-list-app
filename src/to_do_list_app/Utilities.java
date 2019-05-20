@@ -13,6 +13,8 @@ public class Utilities {
 	}
 	
 	public void renameColumns(JTable table) {
+		table.getColumnModel().getColumn(0).setMinWidth(0);
+		table.getColumnModel().getColumn(0).setMaxWidth(0);
 		table.getTableHeader().getColumnModel().getColumn(1).setHeaderValue("Completed");
 		table.getTableHeader().getColumnModel().getColumn(2).setHeaderValue("Task");
 		table.getTableHeader().getColumnModel().getColumn(3).setHeaderValue("Task Details");
