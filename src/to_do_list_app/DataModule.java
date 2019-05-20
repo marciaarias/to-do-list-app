@@ -14,6 +14,7 @@ public class DataModule {
 	int id;
 
 	//Create connection between the application and database.
+	
 	public Connection getConnection() throws Exception{
 		
 		try{			

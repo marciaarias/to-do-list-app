@@ -81,6 +81,7 @@ public class HelpWindow extends JFrame {
 		contentPane.add(lblHelp5);
 		
 		//Implement button 'Close'.
+		
 		JButton btnClose = new JButton("Close");
 		btnClose.setToolTipText("Close Help window");
 		btnClose.addActionListener(new ActionListener() {

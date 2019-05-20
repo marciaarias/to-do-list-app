@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JCheckBox;
+import javax.swing.ImageIcon;
 
 import java.awt.EventQueue;
 import java.awt.Toolkit;
@@ -26,7 +27,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import net.proteanit.sql.DbUtils;
-import javax.swing.ImageIcon;
 
 public class ToDoListApp {
 
@@ -35,6 +35,8 @@ public class ToDoListApp {
 	private JTextField textTask;
 	private JTextField textTaskDetails;
 	private JCheckBox chckbxCompleted;
+	
+	Utilities utilities = new Utilities();
 
 	/**
 	 * Launch the application.
@@ -73,24 +75,25 @@ public class ToDoListApp {
 		frmTodoList.getContentPane().setLayout(null);
 		
 		//Implement button 'Load Tasks'.
+		
 		JButton btnLoadTasks = new JButton("Load Tasks");
 		btnLoadTasks.setToolTipText("Display previously added tasks");
 		btnLoadTasks.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				DataModule dm = new DataModule();
+				DataModule data = new DataModule();
 				
 				try {
-					Connection connection = dm.getConnection();
+					Connection connection = data.getConnection();
 					
 					String query = "SELECT id, completed, task, task_details FROM tasks";
+					
 					PreparedStatement statement = connection.prepareStatement(query);
-					ResultSet rs = statement.executeQuery();
+					ResultSet resultSet = statement.executeQuery();
+					table.setModel(DbUtils.resultSetToTableModel(resultSet));
 					
-					table.setModel(DbUtils.resultSetToTableModel(rs));
-					
-				} catch (Exception e2) {
-					  e2.printStackTrace();
+				} catch (Exception exception) {
+					exception.printStackTrace();
 				}
 				
 			}
@@ -99,6 +102,7 @@ public class ToDoListApp {
 		frmTodoList.getContentPane().add(btnLoadTasks);
 		
 		//Implement button 'Add'.
+		
 		JButton btnAdd = new JButton("Add");
 		btnAdd.setToolTipText("Add new task to the to-do list");
 		btnAdd.addActionListener(new ActionListener() {
@@ -108,10 +112,10 @@ public class ToDoListApp {
 					JOptionPane.showMessageDialog(new JFrame(), "\"Task\" field cannot be empty.", "Error", JOptionPane.WARNING_MESSAGE);
 					
 				} else {
-					DataModule dm = new DataModule();
+					DataModule data = new DataModule();
 					
 					try {
-						Connection connection = dm.getConnection();
+						Connection connection = data.getConnection();
 						
 						String chckbxSelected = "N";
 						if(chckbxCompleted.isSelected() == true) {
@@ -119,7 +123,7 @@ public class ToDoListApp {
 						}
 						
 						String taskDetails = "";
-						if(textTaskDetails.getText().isEmpty()){
+						if(textTaskDetails.getText().isEmpty()) {
 							taskDetails = "NULL";
 						} else {
 							taskDetails = "'"+ textTaskDetails.getText() +"'";
@@ -127,18 +131,16 @@ public class ToDoListApp {
 						
 						String query = "INSERT INTO tasks (completed, task, task_details) "
 										+ "VALUES('" + chckbxSelected + "', '" + textTask.getText() + "', " + taskDetails + ")";
+						
 						PreparedStatement statement = connection.prepareStatement(query);
 					    statement.executeUpdate(query);
-						ResultSet rs = statement.executeQuery("SELECT id, completed, task, task_details FROM tasks");
+						ResultSet resultSet = statement.executeQuery("SELECT id, completed, task, task_details FROM tasks");
+						table.setModel(DbUtils.resultSetToTableModel(resultSet));
 						
-						table.setModel(DbUtils.resultSetToTableModel(rs));
+						utilities.clearFields(textTask, textTaskDetails, chckbxCompleted);
 						
-						textTask.setText("");
-						textTaskDetails.setText("");
-						chckbxCompleted.setSelected(false);
-						
-					} catch (Exception e2) {
-						  e2.printStackTrace();
+					} catch (Exception exception) {
+						exception.printStackTrace();
 					}
 				}
 				
@@ -148,6 +150,7 @@ public class ToDoListApp {
 		frmTodoList.getContentPane().add(btnAdd);
 		
 		//Implement button 'Update'.
+		
 		JButton btnUpdate = new JButton("Update");
 		btnUpdate.setToolTipText("Update currently selected task");
 		btnUpdate.addActionListener(new ActionListener() {
@@ -155,15 +158,15 @@ public class ToDoListApp {
 				
 				int selectedRowIndex = table.getSelectedRow();
 				
-				if(table.isRowSelected(selectedRowIndex) == true){
+				if(table.isRowSelected(selectedRowIndex) == true) {
 				    int clickedOption = JOptionPane.showConfirmDialog(null, "Are you sure you want to modify this task?", "Confirm Update", JOptionPane.YES_NO_OPTION);
 				    
-				    if(clickedOption == JOptionPane.YES_OPTION){	
-						DataModule dm = new DataModule();
+				    if(clickedOption == JOptionPane.YES_OPTION) {	
+						DataModule data = new DataModule();
 						DefaultTableModel model = (DefaultTableModel)table.getModel();
 					
 						try {
-							Connection connection = dm.getConnection();
+							Connection connection = data.getConnection();
 							
 							String chckbxSelected = "N";
 							if(chckbxCompleted.isSelected() == true) {
@@ -177,18 +180,16 @@ public class ToDoListApp {
 						
 							PreparedStatement statement = connection.prepareStatement(query);
 						    statement.executeUpdate(query);
-							ResultSet rs = statement.executeQuery("SELECT id, completed, task, task_details FROM tasks");
+							ResultSet resultSet = statement.executeQuery("SELECT id, completed, task, task_details FROM tasks");
+							table.setModel(DbUtils.resultSetToTableModel(resultSet));
 							
-							table.setModel(DbUtils.resultSetToTableModel(rs));
-							
-							textTask.setText("");
-							textTaskDetails.setText("");
-							chckbxCompleted.setSelected(false);
+							utilities.clearFields(textTask, textTaskDetails, chckbxCompleted);
 						
-						} catch (Exception e2) {
-							e2.printStackTrace();
+						} catch (Exception exception) {
+							exception.printStackTrace();
 						}
 				    }
+				    
 				} else {
 					JOptionPane.showMessageDialog(new JFrame(), "Please select a task first.");
 				}
@@ -199,6 +200,7 @@ public class ToDoListApp {
 		frmTodoList.getContentPane().add(btnUpdate);
 		
 		//Implement button 'Delete'.
+		
 		JButton btnDelete = new JButton("Delete");
 		btnDelete.setToolTipText("Delete currently selected task");
 		btnDelete.addActionListener(new ActionListener() {
@@ -206,28 +208,28 @@ public class ToDoListApp {
 				
 				int selectedRowIndex = table.getSelectedRow();
 				
-				if(table.isRowSelected(selectedRowIndex) == true){
+				if(table.isRowSelected(selectedRowIndex) == true) {
 				    int clickedOption = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this task?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
 				    
-				    if(clickedOption == JOptionPane.YES_OPTION){	
-						DataModule dm = new DataModule();
+				    if(clickedOption == JOptionPane.YES_OPTION) {	
+						DataModule data = new DataModule();
 						DefaultTableModel model = (DefaultTableModel)table.getModel();
 					
 						try {
-							Connection connection = dm.getConnection();
+							Connection connection = data.getConnection();
 						
 							String query = "DELETE FROM tasks WHERE id = " + (int)(model.getValueAt(selectedRowIndex, 0));
 						
 							PreparedStatement statement = connection.prepareStatement(query);
 						    statement.executeUpdate(query);
-							ResultSet rs = statement.executeQuery("SELECT id, completed, task, task_details FROM tasks");
-							
-							table.setModel(DbUtils.resultSetToTableModel(rs));
+							ResultSet resultSet = statement.executeQuery("SELECT id, completed, task, task_details FROM tasks");
+							table.setModel(DbUtils.resultSetToTableModel(resultSet));
 						
-						} catch (Exception e2) {
-							e2.printStackTrace();
+						} catch (Exception exception) {
+							exception.printStackTrace();
 						}
 				    }
+				    
 				} else {
 					JOptionPane.showMessageDialog(new JFrame(), "Please select a task first.");
 				}
@@ -238,6 +240,7 @@ public class ToDoListApp {
 		frmTodoList.getContentPane().add(btnDelete);
 		
 		//Implement button 'Quit'.
+		
 		JButton btnQuit = new JButton("Quit");
 		btnQuit.setToolTipText("Quit the application");
 		btnQuit.addActionListener(new ActionListener() {
@@ -258,6 +261,7 @@ public class ToDoListApp {
 		frmTodoList.getContentPane().add(scrollPane);
 		
 		//Implement MouseClicked on 'table'.
+		
 		table = new JTable();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
@@ -310,6 +314,7 @@ public class ToDoListApp {
 		textTaskDetails.setColumns(300);
 		
 		//Implement button 'Help'.
+		
 		JButton btnHelp = new JButton("?");
 		btnHelp.setToolTipText("Display Help window");
 		btnHelp.setSelectedIcon(new ImageIcon("C:\\Users\\arias\\eclipse-workspace\\to-do-list-app\\resources\\information.png"));
@@ -344,14 +349,13 @@ public class ToDoListApp {
 		frmTodoList.getContentPane().add(separator4);
 		
 		//Implement button 'Clear'.
+		
 		JButton btnClear = new JButton("Clear");
 		btnClear.setToolTipText("Clear all fields");
 		btnClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				textTask.setText("");
-				textTaskDetails.setText("");
-				chckbxCompleted.setSelected(false);
+				utilities.clearFields(textTask, textTaskDetails, chckbxCompleted);
 				
 			}
 		});
@@ -367,4 +371,9 @@ public class ToDoListApp {
 		chckbxCompleted.setBounds(100, 351, 28, 23);
 		frmTodoList.getContentPane().add(chckbxCompleted);
 	}
+	
+	//private void  
+	//table.getTableHeader().getColumnModel().getColumn(0).setHeaderValue("dd");
+	//table.repaint();
+	
 }
