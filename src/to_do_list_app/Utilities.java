@@ -1,7 +1,10 @@
 package to_do_list_app;
 
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableCellRenderer;
+
 import javax.swing.JTable;
 
 public class Utilities {
@@ -19,6 +22,12 @@ public class Utilities {
 		table.getTableHeader().getColumnModel().getColumn(2).setHeaderValue("Task");
 		table.getTableHeader().getColumnModel().getColumn(3).setHeaderValue("Task Details");
 		table.repaint();
+	}
+	
+	public void formatColumn(int column, JTable table) {
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		table.getColumnModel().getColumn(column).setCellRenderer(centerRenderer);
 	}
 	
 }

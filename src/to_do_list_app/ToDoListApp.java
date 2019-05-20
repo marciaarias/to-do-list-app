@@ -97,6 +97,7 @@ public class ToDoListApp {
 				}
 				
 				utilities.renameColumns(table);
+				utilities.formatColumn(1, table);
 				
 			}
 		});
@@ -140,6 +141,7 @@ public class ToDoListApp {
 						table.setModel(DbUtils.resultSetToTableModel(resultSet));
 						
 						utilities.renameColumns(table);
+						utilities.formatColumn(1, table);
 						utilities.clearFields(textTask, textTaskDetails, chckbxCompleted);
 						
 					} catch (Exception exception) {
@@ -187,6 +189,7 @@ public class ToDoListApp {
 							table.setModel(DbUtils.resultSetToTableModel(resultSet));
 							
 							utilities.renameColumns(table);
+							utilities.formatColumn(1, table);
 							utilities.clearFields(textTask, textTaskDetails, chckbxCompleted);
 						
 						} catch (Exception exception) {
@@ -230,6 +233,7 @@ public class ToDoListApp {
 							table.setModel(DbUtils.resultSetToTableModel(resultSet));
 							
 							utilities.renameColumns(table);
+							utilities.formatColumn(1, table);
 						
 						} catch (Exception exception) {
 							exception.printStackTrace();
