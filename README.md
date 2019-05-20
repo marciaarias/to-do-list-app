@@ -4,7 +4,7 @@
 
 *Work in progress...*
 
-&nbsp;&nbsp;&nbsp;
+![alt text](https://github.com/marciaarias/to-do-list-app/blob/master/resources/issue_01.jpg)
 
 &nbsp;&nbsp;&nbsp;
 
