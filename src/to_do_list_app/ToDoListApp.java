@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JCheckBox;
 import javax.swing.ImageIcon;
@@ -42,6 +43,12 @@ public class ToDoListApp {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		try { 
+		    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
